@@ -11,4 +11,8 @@ app_name = 'learning_logs'
 urlpatterns = [
 	# Initial page
 	re_path(r'^$', views.index, name='index'),
+
+
+	# Show all subjects
+	url(r'^topics/$', views.topics, name='topics'),
 ]
