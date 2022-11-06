@@ -15,4 +15,8 @@ urlpatterns = [
 
 	# Show all subjects
 	re_path(r'^topics/$', views.topics, name='topics'),
+
+
+	# Details page for a single subject
+	re_path(r'^topics/(?P<topic_id>\d+)$', views.topic, name='topic'),
 ]
