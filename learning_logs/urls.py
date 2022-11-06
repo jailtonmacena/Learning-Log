@@ -14,5 +14,5 @@ urlpatterns = [
 
 
 	# Show all subjects
-	url(r'^topics/$', views.topics, name='topics'),
+	re_path(r'^topics/$', views.topics, name='topics'),
 ]
