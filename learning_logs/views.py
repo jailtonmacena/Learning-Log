@@ -24,7 +24,11 @@ def topics(request):
 @login_required
 def topic(request, topic_id):
 	"""Shows a single subject and all of its entries."""
-	topic = Topic.objects.get(id=topic_id)	
+	topic = Topic.objects.get(id=topic_id)
+	# Ensures that the subject belongs to the current user
+	if topic.owner != request.user:
+		raise Http404
+			
 	entries = topic.entry_set.order_by('-date_added')
 	context = {'topic': topic, 'entries': entries}
 	return render(request, 'learning_logs/topic.html', context)
