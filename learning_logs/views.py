@@ -44,7 +44,9 @@ def new_topic(request):
 		# Submitted POST data; process the data
 		form = TopicForm(request.POST)
 		if form.is_valid():
-			form.save()
+			new_topic = form.save(commit=False)
+			new_topic.owner = request.user
+			new_topic.save()
 			return HttpResponseRedirect(reverse('learning_logs:topics'))
 
 	context = {'form': form}
