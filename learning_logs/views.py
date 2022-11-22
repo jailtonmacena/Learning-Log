@@ -28,7 +28,7 @@ def topic(request, topic_id):
 	# Ensures that the subject belongs to the current user
 	if topic.owner != request.user:
 		raise Http404
-			
+
 	entries = topic.entry_set.order_by('-date_added')
 	context = {'topic': topic, 'entries': entries}
 	return render(request, 'learning_logs/topic.html', context)
@@ -79,6 +79,8 @@ def edit_entry(request, entry_id):
 	"""Edit an existing entry."""
 	entry = Entry.objects.get(id=entry_id)
 	topic = entry.topic
+	if topic.owner != request.user:
+		raise Http404
 
 	if request.method != 'POST':
 		# initial request; pre-populate the form with the current input
