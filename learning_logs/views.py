@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -16,7 +16,7 @@ def index(request):
 @login_required
 def topics(request):
 	"""Show all subjects"""
-	topics = Topic.objects.order_by('date_added')
+	topics = Topic.objects.filter(owner=request.user).order_by('date_added')
 	context = {'topics': topics}
 	return render(request, 'learning_logs/topics.html', context)
 
@@ -24,7 +24,7 @@ def topics(request):
 @login_required
 def topic(request, topic_id):
 	"""Shows a single subject and all of its entries."""
-	topic = Topic.objects.get(id=topic_id)
+	topic = Topic.objects.get(id=topic_id)	
 	entries = topic.entry_set.order_by('-date_added')
 	context = {'topic': topic, 'entries': entries}
 	return render(request, 'learning_logs/topic.html', context)
