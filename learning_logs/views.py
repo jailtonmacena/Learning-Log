@@ -13,6 +13,12 @@ def index(request):
 	return render(request, 'learning_logs/index.html')
 
 
+def check_topic_owner(request, topic):
+	"""checking if the user associated with a subject is the same as the currently logged in user"""
+	if topic.owner != request.user:
+		raise Http404
+
+
 @login_required
 def topics(request):
 	"""Show all subjects"""
@@ -26,8 +32,7 @@ def topic(request, topic_id):
 	"""Shows a single subject and all of its entries."""
 	topic = Topic.objects.get(id=topic_id)
 	# Ensures that the subject belongs to the current user
-	if topic.owner != request.user:
-		raise Http404
+	check_topic_owner(request, topic)
 
 	entries = topic.entry_set.order_by('-date_added')
 	context = {'topic': topic, 'entries': entries}
@@ -81,8 +86,7 @@ def edit_entry(request, entry_id):
 	"""Edit an existing entry."""
 	entry = Entry.objects.get(id=entry_id)
 	topic = entry.topic
-	if topic.owner != request.user:
-		raise Http404
+	check_topic_owner(request, topic)
 
 	if request.method != 'POST':
 		# initial request; pre-populate the form with the current input
