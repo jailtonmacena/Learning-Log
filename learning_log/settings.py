@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 
+    #third party applications
+    'bootstrap5',
+
+
     # My applications
     'learning_logs',
     'users',
@@ -130,3 +134,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # My settings
 LOGIN_URL = '/users/login/'
+
+
+# Settings for django-bootstrap 5
+BOOTSTRAP5 = {
+    'include_jquery': True,
+}
